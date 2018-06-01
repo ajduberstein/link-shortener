@@ -9,7 +9,7 @@ class FabricException(Exception):
 
 @task
 def check_dev_tools():
-    with settings(abort_exception = FabricException):
+    with settings(abort_exception=FabricException):
         try:
             local('fswatch --version')
             local('tmux -V')
@@ -27,3 +27,12 @@ def frontend_dev():
 def dev():
     print('Running server')
     local('./env/bin/python run.py')
+
+
+@task
+def build_dev():
+    print('Building server')
+    local('pip install -r requirements.txt')
+    print('Building client')
+    local('cd ./client && npm run install && npm run build')
+    print('Built')
